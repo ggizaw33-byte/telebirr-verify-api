@@ -16,6 +16,7 @@ export default async function handler(req, res) {
     });
   }
 
+  // API KEY
   const apiKey = req.headers["x-api-key"];
 
   if (!apiKey || apiKey !== process.env.API_KEY) {
@@ -25,6 +26,7 @@ export default async function handler(req, res) {
     });
   }
 
+  // Transaction ID
   const transactionId = req.query.transaction_id;
 
   if (!transactionId) {
@@ -44,13 +46,33 @@ export default async function handler(req, res) {
     });
   }
 
+  // Ethiopia Time
+  const now = new Date();
+
+  const date = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Africa/Addis_Ababa",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(now);
+
+  const time = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Africa/Addis_Ababa",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false
+  }).format(now);
+
+  // TEST RESPONSE
   return res.status(200).json({
     success: true,
     transaction_id: transactionId,
-    status: "TEST",
-    amount: 0,
+    name: "TEST USER",
+    status: "SUCCESS",
+    amount: 100,
     currency: "ETB",
-    message: "API is working",
-    verified_at: new Date().toISOString()
+    date: date,
+    time: time
   });
 }
